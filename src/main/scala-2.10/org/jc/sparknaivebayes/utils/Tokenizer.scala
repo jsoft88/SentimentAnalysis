@@ -14,7 +14,7 @@ object Tokenizer {
 
   val LuceneVersion = Version.LUCENE_5_1_0
 
-  def tokenizeAll(docs: Iterable[Document]) = docs.map(tokenize)
+  def tokenizeAll(docs: RDD[Document]) = docs.map(tokenize)
 
   def tokenize(doc: Document): TermDoc = TermDoc(doc.docId, doc.labels, tokenize(doc.body))
 

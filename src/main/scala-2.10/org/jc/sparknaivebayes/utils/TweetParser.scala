@@ -1,6 +1,7 @@
 package org.jc.sparknaivebayes.utils
 
 import org.apache.spark.SparkContext
+import org.apache.spark.rdd.RDD
 
 import scala.io.Source
 
@@ -15,15 +16,11 @@ object TweetParser extends Serializable{
 
   val fullRegex = """(\d+),(.+?),(N|P|NEU|NONE)(,\w+|;\w+)*""".r
 
-  def parseAll(csvFiles: Iterable[String], sc: SparkContext) = csvFiles flatMap(csv => parse(csv, sc))
+  def parseAll(csvFiles: Iterable[String], sc: SparkContext): RDD[Document] = {
+    val csv = sc.textFile(csvFiles mkString ",")
+    //val docs = scala.collection.mutable.ArrayBuffer.empty[Document]
 
-  def parse(csvFile: String, sc: SparkContext) = {
-    val csv = sc.textFile(csvFile)
-    val docs = scala.collection.mutable.ArrayBuffer.empty[Document]
-
-    csv.foreach(
-      line => if (!line.contains(headerPart)) docs += buildDocument(line)
-    )
+    val docs = csv.filter(!_.contains(headerPart)).map(buildDocument(_))
     docs
     //docs.filter(!_.docId.equals("INVALID"))
   }

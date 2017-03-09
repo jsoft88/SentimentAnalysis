@@ -20,9 +20,10 @@ object NaiveBayesTrain extends App {
     val csvFiles = args(0).split(",")
     val modelStore = args(1)
     val docs = TweetParser.parseAll(csvFiles, sc)
-    val termDocs = Tokenizer.tokenizeAll(docs)
+    //val termDocs = Tokenizer.tokenizeAll(docs)
 
-    val termDocsRdd = sc.parallelize[TermDoc](termDocs.toSeq)
+    //val termDocsRdd = sc.parallelize[TermDoc](termDocs.toSeq)
+    val termDocsRdd = Tokenizer.tokenizeAll(docs)
 
     val numDocs = termDocsRdd.count()
 

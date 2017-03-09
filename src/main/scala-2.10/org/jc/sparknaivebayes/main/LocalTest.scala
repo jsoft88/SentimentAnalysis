@@ -12,8 +12,9 @@ object LocalTest {
     val sparkConf = new SparkConf().setAppName("readFiles").setMaster("local")
     val sc = new SparkContext(sparkConf)
 
-    val docs = TweetParser.parseAll(List("C:\\Users\\cespedjo\\tweets\\preprocess"), sc)
-
+    val docs = TweetParser.parseAll(List("/home/cloudera/Downloads/general_train.csv"), sc)
+    val count = docs.count()
+    println(count)
   }
 
 }
